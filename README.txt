@@ -1,45 +1,68 @@
-Unity BFS/DFS RPG Demo — Cartoon Theme
-=====================================
+🧭 Explicação do Funcionamento na Unity
 
-Contents:
-- Assets/Resources/  : contains sprites (map, icons, player) and audio (ambient_loop.wav, blip.wav)
-- Assets/Scripts/    : C# scripts (GraphManager.cs, Node.cs, SearchController.cs, UIController.cs)
-- README.txt         : this file
+Quando o projeto é iniciado (ao apertar Play na Unity), o sistema cria automaticamente um mapa de missões interligadas em um plano 2D.
+Cada nó (representado por um círculo colorido) simboliza uma missão do jogador dentro do mundo do jogo.
 
-Important notes:
-- I added cartoon map/background and icon sprites to Assets/Resources so Unity can load them at runtime.
-- Prefabs and scene files can't be reliably created here, but the provided scripts are written so you can quickly assemble the scene.
-- Follow the quick steps below to run the demo in Unity 6000.2.10f1.
+🟢 Etapa 1: Geração do Mapa
 
-Quick Setup (in Unity)
-1. Create a new 2D project (or open existing).
-2. Copy the provided 'Assets' folder into your Unity project folder (replace or merge).
-3. In Unity Editor, open Window -> General -> Scene (create a new Scene) and save it as 'MainScene.unity' in Assets/Scenes/.
-4. In the Hierarchy create an empty GameObject named 'GraphManager' and attach the script 'GraphManager' (from Assets/Scripts).
-   - Create an empty child GameObject under GraphManager named 'NodesParent' and drag it into the GraphManager.nodesParent field.
-   - For 'nodePrefab' and 'playerPrefab' you can create simple prefabs:
-     * Create a new empty GameObject 'NodePrefab':
-       - Add SpriteRenderer component and set Sprite to 'node_circle' (from Resources).
-       - Add the 'Node' script component.
-       - Optional: add a child UI Text for labels.
-       - Drag the NodePrefab into Assets to make it a prefab, then assign it to GraphManager.nodePrefab.
-     * Create a 'PlayerPrefab':
-       - Add SpriteRenderer and set to 'player_ball' (from Resources).
-       - No Rigidbody required.
-       - Make prefab and assign to GraphManager.playerPrefab.
-5. Create an empty GameObject 'SearchController' and attach 'SearchController' script.
-   - Assign GraphManager (drag the GraphManager object) and Player (either the prefab or the runtime Player) to the fields.
-6. Setup UI:
-   - Create a Canvas, add three Buttons named BFSButton, DFSButton, ResetButton.
-   - Create empty object 'UIManager' and attach UIController script; assign the buttons and SearchController.
-7. Press Play. The GraphManager will generate 25 nodes on the map area and instantiate the player at node 0.
-   - Use BFS/DFS buttons to run the demos. Nodes change color to green when visited.
-8. To have the map background visible:
-   - Create a Sprite object, set its Sprite to Assets/Resources/map_background (drag from the project window's Resources folder).
-   - Place it behind (z=-1) and scale to fit the camera view.
+Assim que o jogo começa:
 
-If you want I can also:
-- Generate Unity packages or more editor scripts to auto-build the scene (requires editor-level assets).
-- Provide a step-by-step video or GIF showing the Unity setup.
+O GraphManager instancia vários Nodes (nós) no espaço, usando o NodePrefab.
 
-Enjoy!
+Esses nós são posicionados de forma distribuída no mapa e conectados entre si por linhas que representam os caminhos possíveis.
+
+O fundo do mapa é exibido atrás (um sprite que representa o ambiente, como um mapa ou diagrama).
+
+O resultado é uma estrutura de pontos conectados, semelhante a um mapa de rotas.
+
+🟣 Etapa 2: Início da Busca (BFS ou DFS)
+
+Após o mapa ser criado, o sistema inicia um dos algoritmos de busca:
+
+BFS (Busca em Largura): percorre os nós camada por camada, começando pelo nó inicial e explorando todos os vizinhos antes de avançar.
+
+DFS (Busca em Profundidade): segue um caminho até o fim antes de voltar e explorar os próximos.
+
+Durante a execução:
+
+O nó atual sendo visitado muda de vermelho para verde.
+
+Isso indica que ele já foi descoberto ou completado.
+
+🟡 Etapa 3: Exibição de Nomes das Missões
+
+Cada vez que um nó é visitado:
+
+O nome da missão aparece logo acima dele em texto branco.
+
+Esse nome é gerado dinamicamente pelo script Node.cs, que cria um objeto de texto (TextMeshPro) posicionado acima do sprite.
+
+O texto fica visível por alguns segundos e depois desaparece, simulando um “popup de missão completada”.
+
+Visualmente, isso ajuda a acompanhar o progresso da busca — mostrando quais missões estão sendo visitadas e em qual ordem.
+
+🔵 Etapa 4: Atualização Visual Contínua
+
+Enquanto o algoritmo percorre o mapa:
+
+Os nós visitados permanecem verdes.
+
+Os não visitados continuam vermelhos.
+
+As conexões entre eles permanecem visíveis, indicando o caminho que a busca está explorando.
+
+Isso cria um efeito visual dinâmico, mostrando o funcionamento interno do algoritmo passo a passo, como se fosse um mapa de progresso de missões em tempo real.
+
+🧠 Interpretação Visual (para o professor)
+
+Em resumo:
+
+Cada círculo vermelho = missão ainda não explorada.
+
+Cada círculo verde = missão já visitada.
+
+Texto branco acima do nó = nome da missão que acabou de ser alcançada.
+
+Linhas entre nós = caminhos disponíveis entre missões.
+
+O sistema mostra como a IA percorre o mapa, simulando o comportamento de exploração automática.
