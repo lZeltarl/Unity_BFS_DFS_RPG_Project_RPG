@@ -247,7 +247,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SearchController
   graphManager: {fileID: 1435869667}
   player: {fileID: 402407003}
-  moveSpeed: 3
+  moveSpeed: 10
 --- !u!4 &301160616
 Transform:
   m_ObjectHideFlags: 0
